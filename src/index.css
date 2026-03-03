@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+:root {
+  /* Pink Sakura Theme Colors */
+  --bg-sakura: linear-gradient(135deg, #ffc2d1 0%, #ffdfd3 40%, #f0e6ff 80%, #ffd1dc 100%);
+  --sunset-pink: #ffb7c5;
+  --blush-rose: #f8c8dc;
+  --peach-glow: #ffdfd3;
+  --lavender-haze: #e6e6fa;
+
+  --text-main: #6b4e54;
+  /* Warm brown-pink for readability on light bg */
+  --text-dim: rgba(107, 78, 84, 0.6);
+  --accent-warm: #eba0a0;
+  --accent-soft: #fff5f5;
+  --accent-glow: rgba(255, 183, 197, 0.5);
+
+  --transition-slow: 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-med: 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Quicksand', sans-serif;
+  background: var(--bg-sakura);
+  color: var(--text-main);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  height: 100vh;
+  width: 100vw;
+}
+
+h1,
+h2,
+h3,
+.letter-text {
+  font-family: 'Playfair Display', serif;
+}
+
+.scene-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  transition: opacity var(--transition-slow), transform var(--transition-slow);
+  z-index: 10;
+}
+
+.fade-in {
+  animation: fadeIn var(--transition-slow) forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+button {
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: var(--text-main);
+  padding: 1.1rem 3rem;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  margin: 0.8rem;
+  border-radius: 999px;
+  box-shadow: 0 4px 20px rgba(255, 183, 197, 0.3);
+}
+
+button:hover {
+  background: rgba(255, 255, 255, 0.5);
+  border-color: var(--accent-warm);
+  letter-spacing: 0.25em;
+  transform: translateY(-4px);
+  box-shadow: 0 15px 40px var(--accent-glow);
+}
+
+.cinematic-text {
+  max-width: 850px;
+  text-align: center;
+  line-height: 2;
+  letter-spacing: 0.05em;
+  font-size: 1.5rem;
+  font-weight: 300;
+  text-shadow: 0 1px 5px rgba(255, 255, 255, 0.8);
+}

@@ -1,0 +1,266 @@
+.app-main {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg-sakura);
+  overflow: hidden;
+  transition: background 3s ease-in-out;
+}
+
+/* Breathing Glow Overlay */
+.glow-breathing {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 183, 197, 0.25) 0%, transparent 80%);
+  pointer-events: none;
+  z-index: 1;
+  animation: breathe 6s infinite alternate ease-in-out;
+}
+
+@keyframes breathe {
+  0% {
+    opacity: 0.2;
+    transform: scale(0.9);
+  }
+
+  100% {
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
+}
+
+.glow-breathing.pulse-active {
+  animation: peak-pulse 1s infinite alternate;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 143, 163, 0.4) 0%, transparent 90%);
+}
+
+@keyframes peak-pulse {
+  from {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0.9;
+    transform: scale(1.2);
+  }
+}
+
+/* Vignette for cinematic focus */
+.vignette {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, transparent 40%, rgba(255, 194, 209, 0.2) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Blossom/Petal Animation */
+.petal-fall {
+  position: fixed;
+  width: 12px;
+  height: 12px;
+  background: #ffc2d1;
+  border-radius: 150% 0 150% 150%;
+  box-shadow: 0 0 5px rgba(255, 194, 209, 0.4);
+  animation: petal-fall linear infinite;
+  pointer-events: none;
+  z-index: 5;
+}
+
+@keyframes petal-fall {
+  0% {
+    transform: translateY(-10vh) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 0.8;
+  }
+
+  90% {
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: translateY(110vh) translateX(150px) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Pastel Pink Envelope */
+.envelope-wrapper {
+  perspective: 1000px;
+  cursor: pointer;
+  z-index: 10;
+  animation: float-slow 4s infinite ease-in-out;
+}
+
+@keyframes float-slow {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.envelope {
+  width: 320px;
+  height: 220px;
+  background: #fff8f8;
+  /* Soft blush white */
+  position: relative;
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 15px 50px rgba(255, 183, 197, 0.5);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 183, 197, 0.3);
+}
+
+.seal-rose {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 75px;
+  height: 75px;
+  background: #f8c8dc;
+  /* Rose-colored seal */
+  border-radius: 50%;
+  box-shadow: 0 0 25px rgba(248, 200, 220, 0.9);
+  animation: rose-pulse 3s infinite ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  color: #c98a9c;
+  font-size: 1.8rem;
+}
+
+@keyframes rose-pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 0 15px rgba(248, 200, 220, 0.5);
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 0 40px rgba(248, 200, 220, 1);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 0 15px rgba(248, 200, 220, 0.5);
+  }
+}
+
+/* Letter Content */
+.letter-unfold {
+  background: #fffdf9;
+  color: #5d4a4d;
+  padding: 4rem;
+  max-width: 620px;
+  width: 90%;
+  min-height: 520px;
+  box-shadow: 0 40px 100px rgba(255, 183, 197, 0.4);
+  transform-origin: top;
+  animation: unfold 1.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  line-height: 2;
+  z-index: 20;
+  border-radius: 8px;
+  position: relative;
+}
+
+@keyframes unfold {
+  from {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+
+  to {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+/* Highlight Text */
+.accent-line {
+  color: #ff8fa3;
+  font-style: italic;
+  font-weight: 500;
+  transition: all 0.5s ease;
+}
+
+.pulse-impact {
+  animation: impact-glow 1s ease-out;
+}
+
+@keyframes impact-glow {
+  0% {
+    box-shadow: 0 0 0 rgba(255, 143, 163, 0);
+  }
+
+  50% {
+    box-shadow: 0 0 100px rgba(255, 143, 163, 0.8);
+  }
+
+  100% {
+    box-shadow: 0 40px 100px rgba(255, 183, 197, 0.4);
+  }
+}
+
+/* Transition layers */
+.fade-overlay {
+  position: fixed;
+  inset: 0;
+  background: #ffdfd3;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+
+.fade-overlay.active {
+  opacity: 1;
+}
+
+/* Bunny Icon for Sakura Path */
+.bunny-friend {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(8px);
+  padding: 1rem;
+  border-radius: 20px;
+  font-size: 1.5rem;
+  z-index: 100;
+}
+
+.final-glow-text {
+  position: fixed;
+  bottom: 4rem;
+  width: 100%;
+  text-align: center;
+  color: rgba(107, 78, 84, 0.4);
+  font-size: 0.95rem;
+  letter-spacing: 0.12em;
+  opacity: 0;
+  animation: fadeIn 3s forwards;
+  animation-delay: 5s;
+}
