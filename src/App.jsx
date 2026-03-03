@@ -224,7 +224,7 @@ const AppContent = () => {
               ))}
             </div>
             {confessionLineIdx === confessionScript.length - 1 && (
-              <div className="button-group fade-in" style={{ marginTop: '4rem', opacity: 0, animation: 'fadeIn 1.5s forwards' }}>
+              <div className="button-group fade-in" style={{ marginTop: '1.5rem', opacity: 0, animation: 'fadeIn 1.5s forwards' }}>
                 <button onClick={handleYes}>💖 Yes… I feel it too</button>
                 <button onClick={handleTime}>🌙 I need a little time</button>
               </div>
