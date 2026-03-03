@@ -171,19 +171,23 @@
 .letter-unfold {
   background: #fffdf9;
   color: #5d4a4d;
-  padding: 4rem;
-  max-width: 620px;
-  width: 90%;
-  min-height: 520px;
+  padding: 2.5rem 3rem;
+  max-width: 650px;
+  width: 95%;
+  min-height: auto;
+  max-height: 90vh;
   box-shadow: 0 40px 100px rgba(255, 183, 197, 0.4);
   transform-origin: top;
   animation: unfold 1.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
   font-family: 'Playfair Display', serif;
-  font-size: 1.25rem;
-  line-height: 2;
+  font-size: 1.05rem;
+  line-height: 1.6;
   z-index: 20;
-  border-radius: 8px;
+  border-radius: 12px;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 @keyframes unfold {
