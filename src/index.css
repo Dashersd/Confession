@@ -35,7 +35,7 @@ body {
 }
 
 #root {
-  height: 100vh;
+  height: 100dvh;
   width: 100vw;
 }
 
@@ -109,4 +109,26 @@ button:hover {
   font-size: 1.5rem;
   font-weight: 300;
   text-shadow: 0 1px 5px rgba(255, 255, 255, 0.8);
+}
+
+/* --- Mobile Refinement --- */
+@media (max-width: 768px) {
+  .cinematic-text {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    padding: 1rem;
+  }
+
+  button {
+    padding: 0.9rem 2.2rem;
+    font-size: 0.8rem;
+    margin: 0.5rem;
+    width: 80%;
+    /* Primary mobile button style */
+    max-width: 300px;
+  }
+
+  .scene-container {
+    padding: 1rem;
+  }
 }

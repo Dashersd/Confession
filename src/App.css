@@ -317,3 +317,59 @@
   opacity: 0;
   animation: fadeIn 1.5s forwards;
 }
+
+/* --- App Mobile Overrides --- */
+@media (max-width: 768px) {
+  .envelope {
+    width: 280px;
+    height: 190px;
+  }
+
+  .seal-rose {
+    width: 60px;
+    height: 60px;
+    font-size: 1.4rem;
+  }
+
+  .letter-unfold {
+    padding: 1.2rem 1.5rem;
+    max-height: 85vh;
+    /* More room for UI elements */
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+
+  .button-row {
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .silhouette-hands {
+    width: 280px;
+    height: 140px;
+  }
+
+  .pinky-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .bunny-friend {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    padding: 0.8rem;
+    font-size: 1.2rem;
+  }
+
+  .final-glow-text {
+    bottom: 2rem;
+    font-size: 0.85rem;
+    padding: 0 1rem;
+  }
+
+  .petal-fall {
+    width: 8px;
+    height: 8px;
+  }
+}
