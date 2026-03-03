@@ -7,6 +7,7 @@ import { useAudio, AudioProvider } from './components/AudioProvider';
 const AppContent = () => {
   // Scene names: start (initial), intro, envelope, confession, yes, wait
   const [scene, setScene] = useState('start');
+  const [yesStep, setYesStep] = useState('initial'); // 'initial', 'held', 'promised'
   const [introLineIdx, setIntroLineIdx] = useState(0);
   const [showIntroButtons, setShowIntroButtons] = useState(false);
   const [bunnyActive, setBunnyActive] = useState(false);
@@ -14,7 +15,9 @@ const AppContent = () => {
   const [activeConfessionLines, setActiveConfessionLines] = useState([]);
   const [confessionPeak, setConfessionPeak] = useState(false);
   const [petalIntensity, setPetalIntensity] = useState(20);
+  const [petalSpeed, setPetalSpeed] = useState(1); // multiplier
   const [finalMessageVisible, setFinalMessageVisible] = useState(false);
+  const [extraFinalMessage, setExtraFinalMessage] = useState(false);
   const [replyMode, setReplyMode] = useState(false);
   const [reply, setReply] = useState("");
   const { playBgm, playSfx } = useAudio();
@@ -85,13 +88,13 @@ const AppContent = () => {
   }, [scene, introLineIdx]);
 
   const handleEnter = () => {
-    playBgm('bgm_intro'); // Matches existing key in AudioProvider
+    playBgm('bgm_intro');
     setScene('intro');
   };
 
   const handleOpenOption = () => {
     playSfx('sfx_click');
-    playBgm('bgm_letter'); // Matches existing key
+    playBgm('bgm_letter');
     setScene('envelope');
   };
 
@@ -113,12 +116,10 @@ const AppContent = () => {
         setConfessionLineIdx(nextIdx);
         setActiveConfessionLines(prev => [...prev, nextLine]);
 
-        // Emotional Peak: "I like you."
         if (nextLine === "I like you.") {
           setConfessionPeak(true);
           playSfx('sfx_heartbeat', 0.25);
           setPetalIntensity(50);
-          // Single pulse effect
           setTimeout(() => {
             setConfessionPeak(false);
             setPetalIntensity(25);
@@ -130,13 +131,30 @@ const AppContent = () => {
 
   const handleYes = () => {
     playSfx('sfx_chime');
-    playBgm('bgm_yes'); // Brighter theme
+    playBgm('bgm_yes');
     setScene('yes');
     setPetalIntensity(35);
   };
 
+  const handleHoldHand = () => {
+    playSfx('sfx_heartbeat');
+    setYesStep('held');
+    setConfessionPeak(true); // Re-use pulse effect for glow intensity
+    setTimeout(() => {
+      setConfessionPeak(false);
+    }, 2000);
+    setTimeout(() => setExtraFinalMessage(true), 5000);
+  };
+
+  const handlePinkyPromise = () => {
+    playSfx('sfx_chime');
+    setYesStep('promised');
+    setPetalSpeed(0.5); // Slower petals
+    setTimeout(() => setExtraFinalMessage(true), 5000);
+  };
+
   const handleTime = () => {
-    playBgm('bgm_wait'); // Patient theme
+    playBgm('bgm_wait');
     setScene('wait');
   };
 
@@ -147,7 +165,7 @@ const AppContent = () => {
           <div key={i} className="petal-fall" style={{
             left: `${Math.random() * 100}vw`,
             animationDelay: `${Math.random() * 5}s`,
-            animationDuration: `${8 + Math.random() * 6}s`,
+            animationDuration: `${(8 + Math.random() * 6) / petalSpeed}s`,
             opacity: 0.4 + Math.random() * 0.4,
             transform: `scale(${0.5 + Math.random()})`
           }} />
@@ -157,21 +175,19 @@ const AppContent = () => {
   };
 
   return (
-    <div className="app-main">
+    <div className={`app-main ${yesStep === 'held' ? 'warm-peach' : ''}`}>
       <div className={`glow-breathing ${confessionPeak ? 'pulse-active' : ''}`} />
       <div className="vignette" />
 
-      {/* Sakura Layer */}
       {renderPetals(petalIntensity)}
 
-      {/* START SCREEN */}
       {scene === 'start' && (
         <div className="scene-container fade-in">
           <button onClick={handleEnter} style={{ letterSpacing: '0.4em', padding: '1.5rem 4rem' }}>🌸 Bloom 🌸</button>
+          <p style={{ marginTop: '2rem', opacity: 0.5, fontStyle: 'italic', color: 'var(--text-main)', letterSpacing: '0.1em' }}>Romantic flow ready</p>
         </div>
       )}
 
-      {/* INTRO SCENE */}
       {scene === 'intro' && (
         <div className="scene-container">
           <div className="cinematic-text">
@@ -182,7 +198,7 @@ const AppContent = () => {
             ))}
           </div>
           {showIntroButtons && (
-            <div className="button-group fade-in" style={{ marginTop: '3rem', opacity: 0, animation: 'fadeIn 1s 1s forwards' }}>
+            <div className="button-row fade-in" style={{ marginTop: '3rem', opacity: 0, animation: 'fadeIn 1s 1s forwards' }}>
               <button onClick={handleOpenOption}>💌 Open the letter</button>
               <button onClick={() => setBunnyActive(true)}>🌸 Wait a little</button>
             </div>
@@ -195,7 +211,6 @@ const AppContent = () => {
         </div>
       )}
 
-      {/* ENVELOPE SCENE */}
       {scene === 'envelope' && (
         <div className="scene-container fade-in">
           <div className="envelope-wrapper" onClick={handleSealClick}>
@@ -204,11 +219,9 @@ const AppContent = () => {
               <div className="seal-rose">❤</div>
             </div>
           </div>
-          <p className="dim-text fade-in" style={{ marginTop: '3.5rem', letterSpacing: '0.2em', opacity: 0.6 }}>Touch the heart seal</p>
         </div>
       )}
 
-      {/* CONFESSION SCENE */}
       {scene === 'confession' && (
         <div className="scene-container fade-in">
           <div className={`letter-unfold ${confessionPeak ? 'pulse-impact' : ''}`}>
@@ -224,7 +237,7 @@ const AppContent = () => {
               ))}
             </div>
             {confessionLineIdx === confessionScript.length - 1 && (
-              <div className="button-group fade-in" style={{ marginTop: '1.5rem', opacity: 0, animation: 'fadeIn 1.5s forwards' }}>
+              <div className="button-row fade-in" style={{ marginTop: '1.5rem', opacity: 0, animation: 'fadeIn 1.5s forwards' }}>
                 <button onClick={handleYes}>💖 Yes… I feel it too</button>
                 <button onClick={handleTime}>🌙 I need a little time</button>
               </div>
@@ -233,44 +246,60 @@ const AppContent = () => {
         </div>
       )}
 
-      {/* YES PATH */}
       {scene === 'yes' && (
-        <div className="scene-container fade-in" style={{ background: 'radial-gradient(circle at center, rgba(255, 230, 200, 0.2), transparent)' }}>
-          <div className="cinematic-text" style={{ paddingBottom: '3rem' }}>
-            <div className="fade-line" style={{ color: '#ff8fa3', fontStyle: 'italic', animation: 'fadeIn 1.5s forwards' }}>You just made everything feel brighter…</div>
-            <div className="fade-line" style={{ animation: 'fadeIn 1.5s 2s forwards', opacity: 0 }}>Like the sky turning pink before sunrise.</div>
-            <div className="fade-line" style={{ animation: 'fadeIn 1.5s 4s forwards', opacity: 0 }}>I promise I won’t rush this.</div>
-            <div className="fade-line" style={{ animation: 'fadeIn 1.5s 6s forwards', opacity: 0, fontWeight: 500 }}>I just want something soft and beautiful — growing slowly with you.</div>
+        <div className="scene-container fade-in">
+          {yesStep === 'initial' ? (
+            <div className="cinematic-text">
+              <div className="fade-line" style={{ color: '#ff8fa3', fontStyle: 'italic' }}>You just made everything feel brighter…</div>
+              <div className="fade-line" style={{ animationDelay: '2s' }}>Like the sky turning pink before sunrise.</div>
+              <div className="fade-line" style={{ animationDelay: '4s' }}>I promise I won’t rush this.</div>
+              <div className="fade-line" style={{ animationDelay: '6s', fontWeight: 500 }}>I just want something soft and beautiful — growing slowly with you.</div>
 
-            <div className="button-group fade-in" style={{ marginTop: '4rem', opacity: 0, animation: 'fadeIn 1.5s 7.5s forwards' }}>
-              <button onClick={() => playSfx('sfx_chime')}>🤍 Hold my hand</button>
-              <button onClick={() => playSfx('sfx_chime')}>🎀 Pinky promise</button>
+              <div className="button-row fade-in" style={{ marginTop: '4rem', opacity: 0, animation: 'fadeIn 1.5s 7.5s forwards' }}>
+                <button onClick={handleHoldHand}>🤍 Hold my hand</button>
+                <button onClick={handlePinkyPromise}>🎀 Pinky promise</button>
+              </div>
             </div>
-          </div>
+          ) : yesStep === 'held' ? (
+            <div className="cinematic-text fade-in">
+              <div className="silhouette-hands" />
+              <div className="fade-line">Then stay close…</div>
+              <div className="fade-line">Let’s take this gently.</div>
+              <div className="fade-line">Together.</div>
+              {extraFinalMessage && <div className="fade-line accent-line" style={{ marginTop: '3rem' }}>I’m glad it’s you.</div>}
+            </div>
+          ) : (
+            <div className="cinematic-text fade-in">
+              <div className="pinky-icon">🤙</div>
+              <div className="fade-line">Then it’s a promise.</div>
+              <div className="fade-line">No rushing.</div>
+              <div className="fade-line">Just something real.</div>
+              {extraFinalMessage && <div className="fade-line accent-line" style={{ marginTop: '3rem' }}>I’m glad it’s you.</div>}
+            </div>
+          )}
         </div>
       )}
 
-      {/* WAIT PATH */}
       {scene === 'wait' && (
-        <div className="scene-container fade-in" style={{ background: 'linear-gradient(to bottom, transparent, rgba(230, 230, 250, 0.2))' }}>
+        <div className="scene-container fade-in">
           <div className="cinematic-text">
-            <div className="fade-line" style={{ animation: 'fadeIn 1.5s forwards' }}>That’s okay…</div>
-            <div className="fade-line" style={{ animation: 'fadeIn 1.5s 2s forwards', opacity: 0 }}>Even blossoms take time before they fully open.</div>
-            <div className="fade-line" style={{ animation: 'fadeIn 1.5s 4s forwards', opacity: 0 }}>I care more about your comfort than any answer.</div>
-            <div className="fade-line" style={{ animation: 'fadeIn 1.5s 6s forwards', opacity: 0 }}>I’ll stay right here — softly.</div>
+            <div className="fade-line">That’s okay…</div>
+            <div className="fade-line" style={{ animationDelay: '2s' }}>Even blossoms take time before they fully open.</div>
+            <div className="fade-line" style={{ animationDelay: '4s' }}>I care more about your comfort than any answer.</div>
+            <div className="fade-line" style={{ animationDelay: '6s' }}>I’ll stay right here — softly.</div>
 
             {!replyMode ? (
-              <button onClick={() => setReplyMode(true)} style={{ marginTop: '3rem', fontSize: '0.8rem', letterSpacing: '0.1em' }} className="fade-in">✍️ Leave a small reply</button>
+              <button onClick={() => setReplyMode(true)} style={{ marginTop: '3rem' }}>✍️ Leave a small reply</button>
             ) : (
-              <div className="reply-box fade-in" style={{ marginTop: '2rem' }}>
+              <div className="reply-box fade-in">
                 <input
                   type="text"
-                  placeholder="Type your reply here..."
+                  placeholder="Type your reply..."
                   value={reply}
                   onChange={(e) => setReply(e.target.value)}
-                  style={{ background: 'transparent', border: 'none', borderBottom: '1px solid var(--text-main)', color: 'var(--text-main)', padding: '0.5rem', outline: 'none', width: '300px' }}
+                  style={{ background: 'transparent', border: 'none', borderBottom: '1px solid black', color: 'inherit', padding: '0.5rem', outline: 'none', width: '250px' }}
                 />
-                <button onClick={() => { localStorage.setItem('reply', reply); playSfx('sfx_chime'); setReplyMode(false); }} style={{ fontSize: '0.7rem' }}>Send</button>
+                <button onClick={() => { localStorage.setItem('reply', reply); setReplyMode(false); }}>Send</button>
               </div>
             )}
           </div>

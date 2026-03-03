@@ -4,7 +4,12 @@
   height: 100vh;
   background: var(--bg-sakura);
   overflow: hidden;
-  transition: background 3s ease-in-out;
+  transition: background 3s ease-in-out, filter 2s ease-in-out;
+}
+
+.app-main.warm-peach {
+  background: radial-gradient(135deg, #ffdfd3 0%, #ffc2d1 100%);
+  filter: saturate(1.1) brightness(1.05);
 }
 
 /* Breathing Glow Overlay */
@@ -94,6 +99,16 @@
   }
 }
 
+/* Button Group Centering */
+.button-row {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 2rem;
+}
+
 /* Pastel Pink Envelope */
 .envelope-wrapper {
   perspective: 1000px;
@@ -118,7 +133,6 @@
   width: 320px;
   height: 220px;
   background: #fff8f8;
-  /* Soft blush white */
   position: relative;
   transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 15px 50px rgba(255, 183, 197, 0.5);
@@ -138,7 +152,6 @@
   width: 75px;
   height: 75px;
   background: #f8c8dc;
-  /* Rose-colored seal */
   border-radius: 50%;
   box-shadow: 0 0 25px rgba(248, 200, 220, 0.9);
   animation: rose-pulse 3s infinite ease-in-out;
@@ -189,7 +202,6 @@
   flex-direction: column;
   justify-content: flex-start;
   overflow: hidden;
-  /* Strictly no scroll */
 }
 
 @keyframes unfold {
@@ -230,19 +242,49 @@
   }
 }
 
-/* Transition layers */
-.fade-overlay {
+/* Silhouette Hands Effect */
+.silhouette-hands {
   position: fixed;
-  inset: 0;
-  background: #ffdfd3;
-  z-index: 100;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  height: 200px;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100"><path d="M40 100 Q 60 40 80 80 Q 90 90 100 80 Q 110 90 120 80 Q 140 40 160 100" fill="rgba(107, 78, 84, 0.08)"/></svg>') no-repeat center bottom;
+  background-size: contain;
+  animation: fadeIn 3s forwards;
+  z-index: 1;
   pointer-events: none;
-  opacity: 0;
-  transition: opacity 1.5s ease;
 }
 
-.fade-overlay.active {
-  opacity: 1;
+/* Pinky Icon */
+.pinky-icon {
+  font-size: 3.5rem;
+  margin-bottom: 2rem;
+  filter: drop-shadow(0 0 10px rgba(255, 183, 197, 0.5));
+  animation: heartBeat 2s infinite;
+}
+
+@keyframes heartBeat {
+  0% {
+    transform: scale(1);
+  }
+
+  14% {
+    transform: scale(1.1);
+  }
+
+  28% {
+    transform: scale(1);
+  }
+
+  42% {
+    transform: scale(1.1);
+  }
+
+  70% {
+    transform: scale(1);
+  }
 }
 
 /* Bunny Icon for Sakura Path */
@@ -269,4 +311,9 @@
   opacity: 0;
   animation: fadeIn 3s forwards;
   animation-delay: 5s;
+}
+
+.fade-line {
+  opacity: 0;
+  animation: fadeIn 1.5s forwards;
 }
