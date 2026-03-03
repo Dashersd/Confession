@@ -168,7 +168,6 @@ const AppContent = () => {
       {scene === 'start' && (
         <div className="scene-container fade-in">
           <button onClick={handleEnter} style={{ letterSpacing: '0.4em', padding: '1.5rem 4rem' }}>🌸 Bloom 🌸</button>
-          <p style={{ marginTop: '2rem', opacity: 0.5, fontStyle: 'italic', color: 'var(--text-main)', letterSpacing: '0.1em' }}>Romantic music recommended</p>
         </div>
       )}
 
