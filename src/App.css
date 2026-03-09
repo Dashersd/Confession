@@ -201,7 +201,17 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  overflow: hidden;
+  overflow-y: auto;
+  padding-bottom: 3rem;
+  scrollbar-width: none;
+  /* Hide scrollbar for cleaner look in Firefox */
+  -ms-overflow-style: none;
+  /* Hide scrollbar for IE/Edge */
+}
+
+.letter-unfold::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar for Chrome/Safari */
 }
 
 @keyframes unfold {
