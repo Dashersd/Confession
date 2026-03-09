@@ -34,20 +34,23 @@ const AppContent = () => {
     "Maybe it was the way your smile stayed in my thoughts.",
     "Or how everything felt lighter",
     "whenever you were near.",
+    "",
     "It wasn’t loud.",
     "It didn’t rush in like a storm.",
     "It bloomed quietly…",
     "like soft pink petals in spring.",
+    "",
     "Little by little,",
     "you became someone I look forward to.",
     "The comfort in my day.",
     "The warmth in small moments.",
-    "And no matter how I tried to ignore it,",
-    "my heart kept choosing you.",
+    "Little by little, you became someone my days just felt better with.",
+    "",
     "So here I am —",
     "a little shy,",
     "very honest…",
     "and hoping.",
+    "",
     "I like you.",
     "In a gentle, steady way",
     "that feels real."
@@ -253,20 +256,21 @@ const AppContent = () => {
               <div className="fade-line" style={{ color: '#ff8fa3', fontStyle: 'italic' }}>You just made everything feel brighter…</div>
               <div className="fade-line" style={{ animationDelay: '2s' }}>Like the sky turning pink before sunrise.</div>
               <div className="fade-line" style={{ animationDelay: '4s' }}>I promise I won’t rush this.</div>
-              <div className="fade-line" style={{ animationDelay: '6s', fontWeight: 500 }}>I just want something soft and beautiful — growing slowly with you.</div>
+              <div className="fade-line" style={{ animationDelay: '6s' }}>I just want something soft and beautiful — growing slowly with you.</div>
+              <div className="fade-line" style={{ animationDelay: '8s' }}>Would it be okay if I try to pursue you…</div>
+              <div className="fade-line" style={{ animationDelay: '10s' }}>and see where this could gently lead us?</div>
 
-              <div className="button-row fade-in" style={{ marginTop: '4rem', opacity: 0, animation: 'fadeIn 1.5s 7.5s forwards' }}>
-                <button onClick={handleHoldHand}>🤍 Hold my hand</button>
-                <button onClick={handlePinkyPromise}>🎀 Pinky promise</button>
+              <div className="button-row fade-in" style={{ marginTop: '4rem', opacity: 0, animation: 'fadeIn 1.5s 11.5s forwards' }}>
+                <button onClick={handleHoldHand}>� Yes</button>
+                <button onClick={handleTime}>� No</button>
               </div>
             </div>
           ) : yesStep === 'held' ? (
             <div className="cinematic-text fade-in">
-              <div className="silhouette-hands" />
               <div className="fade-line">Then stay close…</div>
-              <div className="fade-line">Let’s take this gently.</div>
-              <div className="fade-line">Together.</div>
-              {extraFinalMessage && <div className="fade-line accent-line" style={{ marginTop: '3rem' }}>I’m glad it’s you.</div>}
+              <div className="fade-line" style={{ animationDelay: '2s' }}>Let’s take this gently.</div>
+              <div className="fade-line" style={{ animationDelay: '4s' }}>Together.</div>
+              <div className="fade-line accent-line" style={{ marginTop: '3rem', animationDelay: '6.5s' }}>I’m glad it’s you.</div>
             </div>
           ) : (
             <div className="cinematic-text fade-in">
