@@ -92,13 +92,13 @@ const AppContent = () => {
   }, [scene, introLineIdx]);
 
   const handleEnter = () => {
-    playBgm(0); // Scene 1 - Instrumental Intro
+    playBgm(); // Scene 1 - Background music starts
     setScene('intro');
   };
 
   const handleOpenOption = () => {
     playSfx('sfx_click');
-    playBgm(16); // Scene 2 - First Verse Begins
+    playBgm();
     setScene('envelope');
   };
 
@@ -122,7 +122,7 @@ const AppContent = () => {
 
         if (nextLine === "I like you.") {
           setConfessionPeak(true);
-          playBgm(62); // Scene 3 - Chorus Begins
+          playBgm();
           playSfx('sfx_heartbeat', 0.25);
           setPetalIntensity(50);
           setTimeout(() => {
