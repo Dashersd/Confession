@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './App.css';
 import ParticleBackground from './components/ParticleBackground';
 import TypewriterText from './components/TypewriterText';
+import Confetti from './components/Confetti';
 import { useAudio, AudioProvider } from './components/AudioProvider';
 
 const AppContent = () => {
@@ -91,13 +92,13 @@ const AppContent = () => {
   }, [scene, introLineIdx]);
 
   const handleEnter = () => {
-    playBgm('bgm_intro');
+    playBgm(0); // Scene 1 - Instrumental Intro
     setScene('intro');
   };
 
   const handleOpenOption = () => {
     playSfx('sfx_click');
-    playBgm('bgm_letter');
+    playBgm(16); // Scene 2 - First Verse Begins
     setScene('envelope');
   };
 
@@ -121,6 +122,7 @@ const AppContent = () => {
 
         if (nextLine === "I like you.") {
           setConfessionPeak(true);
+          playBgm(62); // Scene 3 - Chorus Begins
           playSfx('sfx_heartbeat', 0.25);
           setPetalIntensity(50);
           setTimeout(() => {
@@ -251,6 +253,7 @@ const AppContent = () => {
 
       {scene === 'yes' && (
         <div className="scene-container fade-in">
+          {yesStep === 'held' && <Confetti count={100} />}
           {yesStep === 'initial' ? (
             <div className="cinematic-text">
               <div className="fade-line" style={{ color: '#ff8fa3', fontStyle: 'italic' }}>You just made everything feel brighter…</div>
