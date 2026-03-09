@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;600&display=swap');
 
 :root {
   /* Pink Sakura Theme Colors */
@@ -26,7 +26,7 @@
 }
 
 body {
-  font-family: 'Quicksand', sans-serif;
+  font-family: 'Outfit', sans-serif;
   background: var(--bg-sakura);
   color: var(--text-main);
   overflow: hidden;
@@ -43,7 +43,7 @@ h1,
 h2,
 h3,
 .letter-text {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
 }
 
 .scene-container {
@@ -80,11 +80,11 @@ button {
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.4);
   color: var(--text-main);
-  padding: 1.1rem 3rem;
-  font-family: 'Quicksand', sans-serif;
-  font-size: 0.9rem;
+  padding: 0.7rem 1.8rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
@@ -97,25 +97,25 @@ button:hover {
   background: rgba(255, 255, 255, 0.5);
   border-color: var(--accent-warm);
   letter-spacing: 0.25em;
-  transform: translateY(-4px);
   box-shadow: 0 15px 40px var(--accent-glow);
 }
 
 .cinematic-text {
-  max-width: 850px;
+  max-width: 900px;
   text-align: center;
-  line-height: 2;
+  line-height: 1.6;
   letter-spacing: 0.05em;
-  font-size: 1.5rem;
-  font-weight: 300;
-  text-shadow: 0 1px 5px rgba(255, 255, 255, 0.8);
+  font-size: 2.2rem;
+  font-weight: 500;
+  font-family: 'Dancing Script', cursive;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
+  transform: translateY(-20px);
 }
 
-/* --- Mobile Refinement --- */
 @media (max-width: 768px) {
   .cinematic-text {
-    font-size: 1.2rem;
-    line-height: 1.8;
+    font-size: 1.6rem;
+    line-height: 1.5;
     padding: 1rem;
   }
 

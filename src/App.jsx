@@ -270,10 +270,10 @@ const AppContent = () => {
             </div>
           ) : yesStep === 'held' ? (
             <div className="cinematic-text fade-in">
-              <div className="fade-line">Then stay close…</div>
-              <div className="fade-line" style={{ animationDelay: '2s' }}>Let’s take this gently.</div>
-              <div className="fade-line" style={{ animationDelay: '4s' }}>Together.</div>
-              <div className="fade-line accent-line" style={{ marginTop: '3rem', animationDelay: '6.5s' }}>I’m glad it’s you.</div>
+              <div className="fade-line">My heart feels so full right now...</div>
+              <div className="fade-line" style={{ animationDelay: '2s' }}>Thank you for being you.</div>
+              <div className="fade-line" style={{ animationDelay: '4s' }}>Let’s walk this path slowly, hand in hand.</div>
+              <div className="fade-line accent-line" style={{ marginTop: '3rem', animationDelay: '6s' }}>I’m so happy it’s us.</div>
             </div>
           ) : (
             <div className="cinematic-text fade-in">
