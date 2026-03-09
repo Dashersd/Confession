@@ -112,6 +112,18 @@ const AppContent = () => {
     }, 850);
   };
 
+  const letterRef = useRef(null);
+
+  // Auto-scroll the letter to bottom as new lines appear
+  useEffect(() => {
+    if (letterRef.current) {
+      letterRef.current.scrollTo({
+        top: letterRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
+  }, [activeConfessionLines]);
+
   const handleTypeComplete = () => {
     if (confessionLineIdx < confessionScript.length - 1) {
       setTimeout(() => {
@@ -130,7 +142,7 @@ const AppContent = () => {
             setPetalIntensity(25);
           }, 2000);
         }
-      }, 1000);
+      }, 800);
     }
   };
 
@@ -229,7 +241,7 @@ const AppContent = () => {
 
       {scene === 'confession' && (
         <div className="scene-container fade-in">
-          <div className={`letter-unfold ${confessionPeak ? 'pulse-impact' : ''}`}>
+          <div ref={letterRef} className={`letter-unfold ${confessionPeak ? 'pulse-impact' : ''}`}>
             <div style={{ textAlign: 'left' }}>
               {activeConfessionLines.map((line, idx) => (
                 <TypewriterText

@@ -2,6 +2,7 @@
   position: relative;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   background: var(--bg-sakura);
   overflow: hidden;
   transition: background 3s ease-in-out, filter 2s ease-in-out;
@@ -201,7 +202,22 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  overflow: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 183, 197, 0.5) transparent;
+}
+
+.letter-unfold::-webkit-scrollbar {
+  width: 4px;
+}
+
+.letter-unfold::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.letter-unfold::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 183, 197, 0.5);
+  border-radius: 20px;
 }
 
 
@@ -337,9 +353,26 @@
 
   .letter-unfold {
     padding: 0.8rem 1.2rem;
-    max-height: 85vh;
+    max-height: 80vh;
     font-size: 0.8rem;
-    line-height: 1.3;
+    line-height: 1.4;
+    transform: translateY(0);
+  }
+
+  @keyframes unfold-mobile {
+    from {
+      transform: translateY(0) scaleY(0);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateY(0) scaleY(1);
+      opacity: 1;
+    }
+  }
+
+  .letter-unfold {
+    animation: unfold-mobile 1.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
   }
 
   .button-row {
