@@ -4,6 +4,7 @@ import ParticleBackground from './components/ParticleBackground';
 import TypewriterText from './components/TypewriterText';
 import Confetti from './components/Confetti';
 import { useAudio, AudioProvider } from './components/AudioProvider';
+import InstallPWA from './components/InstallPWA';
 
 const AppContent = () => {
   // Scene names: start (initial), intro, envelope, confession, yes, wait
@@ -195,6 +196,7 @@ const AppContent = () => {
     <div className={`app-main ${yesStep === 'held' ? 'warm-peach' : ''}`}>
       <div className={`glow-breathing ${confessionPeak ? 'pulse-active' : ''}`} />
       <div className="vignette" />
+      <InstallPWA />
 
       {renderPetals(petalIntensity)}
 
