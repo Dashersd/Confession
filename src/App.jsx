@@ -20,9 +20,7 @@ const AppContent = () => {
   const [petalSpeed, setPetalSpeed] = useState(1); // multiplier
   const [finalMessageVisible, setFinalMessageVisible] = useState(false);
   const [extraFinalMessage, setExtraFinalMessage] = useState(false);
-  const [replyMode, setReplyMode] = useState(false);
-  const [reply, setReply] = useState("");
-  const { playBgm, playSfx } = useAudio();
+  const { playBgm, playSfx, toggleMute, isMuted } = useAudio();
   const idleTimer = useRef(null);
 
   const introScript = [
@@ -194,6 +192,13 @@ const AppContent = () => {
 
   return (
     <div className={`app-main ${yesStep === 'held' ? 'warm-peach' : ''}`}>
+      <button 
+        onClick={toggleMute} 
+        style={{ position: 'fixed', top: '1rem', right: '1rem', zIndex: 10, background: 'rgba(255,255,255,0.3)', border: 'none', borderRadius: '50%', width: '40px', height: '40px', cursor: 'pointer', fontSize: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        title={isMuted ? "Unmute Music" : "Mute Music"}
+      >
+        {isMuted ? '🔇' : '🔊'}
+      </button>
       <div className={`glow-breathing ${confessionPeak ? 'pulse-active' : ''}`} />
       <div className="vignette" />
       <InstallPWA />
@@ -308,21 +313,6 @@ const AppContent = () => {
             <div className="fade-line" style={{ animationDelay: '2s' }}>Even blossoms take time before they fully open.</div>
             <div className="fade-line" style={{ animationDelay: '4s' }}>I care more about your comfort than any answer.</div>
             <div className="fade-line" style={{ animationDelay: '6s' }}>I’ll stay right here — softly.</div>
-
-            {!replyMode ? (
-              <button onClick={() => setReplyMode(true)} style={{ marginTop: '3rem' }}>✍️ Leave a small reply</button>
-            ) : (
-              <div className="reply-box fade-in">
-                <input
-                  type="text"
-                  placeholder="Type your reply..."
-                  value={reply}
-                  onChange={(e) => setReply(e.target.value)}
-                  style={{ background: 'transparent', border: 'none', borderBottom: '1px solid black', color: 'inherit', padding: '0.5rem', outline: 'none', width: '250px' }}
-                />
-                <button onClick={() => { localStorage.setItem('reply', reply); setReplyMode(false); }}>Send</button>
-              </div>
-            )}
           </div>
         </div>
       )}
