@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import './App.css';
 import ParticleBackground from './components/ParticleBackground';
 import TypewriterText from './components/TypewriterText';
 import Confetti from './components/Confetti';
+import CursorTrail from './components/CursorTrail';
 import { useAudio, AudioProvider } from './components/AudioProvider';
 import InstallPWA from './components/InstallPWA';
 
@@ -20,6 +21,8 @@ const AppContent = () => {
   const [petalSpeed, setPetalSpeed] = useState(1); // multiplier
   const [finalMessageVisible, setFinalMessageVisible] = useState(false);
   const [extraFinalMessage, setExtraFinalMessage] = useState(false);
+  const [isOpening, setIsOpening] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const { playBgm, playSfx, toggleMute, isMuted } = useAudio();
   const idleTimer = useRef(null);
 
@@ -30,50 +33,68 @@ const AppContent = () => {
   ];
 
   const confessionScript = [
-    "I didn’t notice when it started…",
-    "Maybe it was the way your smile stayed in my thoughts.",
-    "Or how everything felt lighter",
-    "whenever you were near.",
-    "",
-    "It wasn’t loud.",
-    "It didn’t rush in like a storm.",
-    "It bloomed quietly…",
-    "like soft pink petals in spring.",
-    "",
-    "Little by little,",
-    "you became someone I look forward to.",
-    "The comfort in my day.",
-    "The warmth in small moments.",
-    "Little by little, you became someone my days just felt better with.",
-    "",
-    "So here I am —",
-    "a little shy,",
-    "very honest…",
-    "and hoping.",
-    "",
+    "I've been wanting to tell you something for a while now, but I kept talking myself out of it.",
+    "I guess I was afraid of making things awkward or saying the wrong thing.",
+    "But I don't want to keep keeping it to myself anymore.",
+    "Somewhere along the way, you became someone really important to me.",
+    "I honestly don't know when it started.",
+    "Maybe it was our conversations.",
+    "Maybe it was how I'd always check my phone hoping to see a message from you.",
+    "Maybe it was all the little moments we've shared, even if they've only been through a screen.",
+    "All I know is that before I realized it, I started looking forward to talking to you more than I should have.",
+    "You became someone I genuinely care about.",
+    "And the truth is...",
     "I like you.",
-    "In a gentle, steady way",
-    "that feels real."
+    "I like talking to you.",
+    "I like the way you think.",
+    "I like how easy it is to be myself when we're chatting.",
+    "You can make me smile without even trying, and some of the best parts of my day are the conversations I have with you.",
+    "I've felt this way for a while now, but I didn't want to keep wondering what would happen if I never told you.",
+    "So this is me being completely honest.",
+    "I like you.",
+    "And I know we're still getting to know each other.",
+    "I'm not expecting you to feel the same way right now.",
+    "I'm not asking for an answer today.",
+    "And I definitely don't want you to feel pressured.",
+    "I just wanted you to know how I feel.",
+    "If you need time, that's okay.",
+    "If you're unsure, that's okay too.",
+    "Because feelings don't always grow at the same pace.",
+    "And if it takes time, I'm okay with that.",
+    "You're someone I think is worth being patient for.",
+    "No matter what your answer is, I'm really glad we met, and I'm glad you're part of my life.",
+    "I just didn't want to hide this from you anymore.",
+    "So there it is.",
+    "I like you.",
+    "And if one day you happen to feel the same way, I'll be here."
   ];
 
-  const resetIdleTimer = useCallback(() => {
+  const handleMouseMove = useCallback((e) => {
     if (idleTimer.current) clearTimeout(idleTimer.current);
-    if (scene === 'start') return;
-    idleTimer.current = setTimeout(() => {
-      setFinalMessageVisible(true);
-    }, 12000);
+    if (scene !== 'start') {
+      idleTimer.current = setTimeout(() => {
+        setFinalMessageVisible(true);
+      }, 12000);
+    }
+    
+    // Update mouse position for the glow breathing effect
+    if (e.clientX && e.clientY) {
+      setMousePos({
+        x: (e.clientX / window.innerWidth) * 100,
+        y: (e.clientY / window.innerHeight) * 100
+      });
+    }
   }, [scene]);
 
   useEffect(() => {
-    window.addEventListener('mousemove', resetIdleTimer);
-    window.addEventListener('click', resetIdleTimer);
-    resetIdleTimer();
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('click', handleMouseMove);
     return () => {
-      window.removeEventListener('mousemove', resetIdleTimer);
-      window.removeEventListener('click', resetIdleTimer);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('click', handleMouseMove);
       if (idleTimer.current) clearTimeout(idleTimer.current);
     };
-  }, [resetIdleTimer]);
+  }, [handleMouseMove]);
 
   // Intro progress
   useEffect(() => {
@@ -102,13 +123,16 @@ const AppContent = () => {
   };
 
   const handleSealClick = () => {
+    if (isOpening) return;
+    setIsOpening(true);
     playSfx('sfx_click');
     setTimeout(() => playSfx('sfx_heartbeat'), 150);
     setTimeout(() => playSfx('sfx_paper'), 350);
     setTimeout(() => {
       setScene('confession');
       setActiveConfessionLines([confessionScript[0]]);
-    }, 850);
+      setIsOpening(false);
+    }, 1500);
   };
 
   const letterRef = useRef(null);
@@ -174,16 +198,43 @@ const AppContent = () => {
     setScene('wait');
   };
 
-  const renderPetals = (count) => {
+  const prevPetalsRef = useRef([]);
+
+  const petals = useMemo(() => {
+    let arr = prevPetalsRef.current;
+    
+    if (arr.length > petalIntensity) {
+        arr = arr.slice(0, petalIntensity);
+    } else if (arr.length < petalIntensity) {
+        const added = Array.from({ length: petalIntensity - arr.length }).map(() => ({
+            id: Math.random(),
+            left: `${Math.random() * 100}vw`,
+            animationDelay: `-${Math.random() * 5}s`,
+            opacity: 0.4 + Math.random() * 0.4,
+            scale: 0.5 + Math.random()
+        }));
+        arr = [...arr, ...added];
+    }
+    
+    arr = arr.map(p => ({
+        ...p,
+        animationDuration: `${(8 + Math.random() * 6) / petalSpeed}s`
+    }));
+    
+    prevPetalsRef.current = arr;
+    return arr;
+  }, [petalIntensity, petalSpeed]);
+
+  const renderPetals = () => {
     return (
       <div className="petals-layer" style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 5 }}>
-        {Array.from({ length: count }).map((_, i) => (
-          <div key={i} className="petal-fall" style={{
-            left: `${Math.random() * 100}vw`,
-            animationDelay: `${Math.random() * 5}s`,
-            animationDuration: `${(8 + Math.random() * 6) / petalSpeed}s`,
-            opacity: 0.4 + Math.random() * 0.4,
-            transform: `scale(${0.5 + Math.random()})`
+        {petals.map((p) => (
+          <div key={p.id} className="petal-fall" style={{
+            left: p.left,
+            animationDelay: p.animationDelay,
+            animationDuration: p.animationDuration,
+            opacity: p.opacity,
+            transform: `scale(${p.scale})`
           }} />
         ))}
       </div>
@@ -193,13 +244,20 @@ const AppContent = () => {
   return (
     <div className={`app-main ${yesStep === 'held' ? 'warm-peach' : ''}`}>
       <button 
-        onClick={toggleMute} 
-        style={{ position: 'fixed', top: '1rem', right: '1rem', zIndex: 10, background: 'rgba(255,255,255,0.3)', border: 'none', borderRadius: '50%', width: '40px', height: '40px', cursor: 'pointer', fontSize: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        onClick={(e) => { e.stopPropagation(); toggleMute(); }} 
+        style={{ position: 'fixed', top: '1rem', right: '1rem', zIndex: 1000, background: 'rgba(255,255,255,0.3)', border: 'none', borderRadius: '50%', width: '40px', height: '40px', cursor: 'pointer', fontSize: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         title={isMuted ? "Unmute Music" : "Mute Music"}
       >
         {isMuted ? '🔇' : '🔊'}
       </button>
-      <div className={`glow-breathing ${confessionPeak ? 'pulse-active' : ''}`} />
+      
+      <CursorTrail />
+      <ParticleBackground count={40} color="rgba(255, 183, 197, 0.5)" />
+      
+      <div 
+        className={`glow-breathing ${confessionPeak ? 'pulse-active' : ''}`} 
+        style={{ '--mouse-x': `${mousePos.x}%`, '--mouse-y': `${mousePos.y}%` }}
+      />
       <div className="vignette" />
       <InstallPWA />
 
@@ -207,7 +265,7 @@ const AppContent = () => {
 
       {scene === 'start' && (
         <div className="scene-container fade-in">
-          <button onClick={handleEnter} style={{ letterSpacing: '0.4em', padding: '1.5rem 4rem' }}>🌸 Bloom 🌸</button>
+          <button onClick={handleEnter} style={{ fontFamily: "'Dancing Script', cursive", fontSize: '2.5rem', padding: '1rem 3rem', textTransform: 'none', letterSpacing: '0.1em' }}>Bloom</button>
           <p style={{ marginTop: '2rem', opacity: 0.5, fontStyle: 'italic', color: 'var(--text-main)', letterSpacing: '0.1em' }}>Romantic flow ready</p>
         </div>
       )}
@@ -237,10 +295,10 @@ const AppContent = () => {
 
       {scene === 'envelope' && (
         <div className="scene-container fade-in">
-          <div className="envelope-wrapper" onClick={handleSealClick}>
+          <div className={`envelope-wrapper ${isOpening ? 'opening' : ''}`} onClick={handleSealClick}>
             <div className="envelope">
               <div style={{ width: '100%', height: '100%', backgroundImage: 'url(/envelope.png)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.7 }} />
-              <div className="seal-rose">❤</div>
+              <div className={`seal-rose ${isOpening ? 'breaking' : ''}`}>❤</div>
             </div>
           </div>
         </div>
